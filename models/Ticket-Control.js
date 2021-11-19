@@ -54,9 +54,9 @@ class TicketControl {
         firstTicket.desk = desk;
         //agrego en la primera posicion del array
         this.lastfour.unshift();
-        if(this.lastfour.length > 4){
+        if (this.lastfour.length > 4) {
             //con -1 aparentemente apunta a la ultima posición
-            this.lastfour.splice(-1,1);
+            this.lastfour.splice(-1, 1);
         }
         this.save();
         return firstTicket;
