@@ -47,18 +47,26 @@ class TicketControl {
     }
 
     attendTicket(desk) {
+
         if (!this.tickets.length)
             return null;
+
         //extraigo el primer ticket del array
         const firstTicket = this.tickets.shift();
         firstTicket.desk = desk;
+
         //agrego en la primera posicion del array
-        this.lastfour.unshift();
+        this.lastfour.unshift(firstTicket);
+
         if (this.lastfour.length > 4) {
             //con -1 aparentemente apunta a la ultima posición
             this.lastfour.splice(-1, 1);
         }
+
         this.save();
+
+       
+
         return firstTicket;
     }
 
