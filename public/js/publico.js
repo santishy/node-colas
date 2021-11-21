@@ -20,6 +20,12 @@ socket.on('disconnect',() => {
 
 socket.on('last-four',(payload) => {
     
+    //Se hizo en este evento lo del audio, por que es cuando se atiende un ticket y se dispara este evento
+    //de que se atiende ticket y pues por simplicidad y no crear otro evento personalizado
+    //mejor se le da play al audio aqui, ya que un ticket esta siendo atendido.
+    const audio = new Audio('./audio/new-ticket.mp3');
+    audio.play();
+
     const [ticket1,ticket2,ticket3,ticket4] = payload;
     if(ticket1){
         lblTicket1.innerText = ticket1.turn;

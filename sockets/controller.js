@@ -7,12 +7,8 @@ const ticketControl = new TicketControl();
 const socketController = (socket) => {
 
     socket.emit('last-ticket', ticketControl.last);
-
     socket.emit('last-four',ticketControl.lastfour);
-
-    socket.on('pending-tickets',() => {
-
-    });
+    socket.emit('pending-tickets',ticketControl.tickets.length)
 
     socket.on('disconnect', () => {
 
@@ -21,30 +17,31 @@ const socketController = (socket) => {
     socket.on('next-ticket', (payload, callback) => {
 
         const next = ticketControl.nextTicket();
-
         callback(next)
+        socket.broadcast.emit('pending-tickets', ticketControl.tickets.length)
 
     });
 
-    socket.on('attend-ticket',({desk},callback) => {
+    socket.on('attend-ticket', ({ desk }, callback) => {
 
-        if(!desk){
-            callback({ok:false,msg:'No se envio el escritorio'});
+        if (!desk) {
+            callback({ ok: false, msg: 'No se envio el escritorio' });
             return;
         }
 
         const ticket = ticketControl.attendTicket(desk);
 
-        if(!ticket){
-            callback({ok:false,msg:'No hay tickets por atender el escritorio'});
+        if (!ticket) {
+            callback({ ok: false, msg: 'No hay tickets por atender el escritorio' });
             return;
         }
-        socket.broadcast.emit('last-four',ticketControl.lastfour)
-
-        callback({ok:true,ticket})
+        socket.broadcast.emit('last-four', ticketControl.lastfour)
+        socket.broadcast.emit('pending-tickets',ticketControl.tickets.length)
+        socket.emit('pending-tickets',ticketControl.tickets.length);
+        callback({ ok: true, ticket })
     });
 
-   
+
 
 }
 
